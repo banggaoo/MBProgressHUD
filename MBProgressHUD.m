@@ -44,6 +44,9 @@ static const CGFloat MBDefaultDetailsLabelFontSize = 12.f;
 
 + (instancetype)showHUDAddedTo:(UIView *)view animated:(BOOL)animated {
     MBProgressHUD *hud = [[self alloc] initWithView:view];
+    [hud setDefaultOption];
+    hud.defaultMotionEffectsEnabled = NO;
+    [hud commonInit];
     hud.removeFromSuperViewOnHide = YES;
     [view addSubview:hud];
     [hud showAnimated:animated];
@@ -75,14 +78,15 @@ static const CGFloat MBDefaultDetailsLabelFontSize = 12.f;
 
 #pragma mark - Lifecycle
 
-- (void)commonInit {
-    // Set default values for properties
+- (void)setDefaultOption {
     _animationType = MBProgressHUDAnimationFade;
     _mode = MBProgressHUDModeIndeterminate;
     _margin = 20.0f;
     _defaultMotionEffectsEnabled = YES;
     _contentColor = [UIColor colorWithWhite:0.f alpha:0.7f];
+}
 
+- (void)commonInit {
     // Transparent background
     self.opaque = NO;
     self.backgroundColor = [UIColor clearColor];
@@ -94,20 +98,6 @@ static const CGFloat MBDefaultDetailsLabelFontSize = 12.f;
     [self setupViews];
     [self updateIndicators];
     [self registerForNotifications];
-}
-
-- (instancetype)initWithFrame:(CGRect)frame {
-    if ((self = [super initWithFrame:frame])) {
-        [self commonInit];
-    }
-    return self;
-}
-
-- (instancetype)initWithCoder:(NSCoder *)aDecoder {
-    if ((self = [super initWithCoder:aDecoder])) {
-        [self commonInit];
-    }
-    return self;
 }
 
 - (id)initWithView:(UIView *)view {
